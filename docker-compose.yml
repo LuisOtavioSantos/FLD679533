@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: rest_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: kwd2%/O.?NSN4ZwWXJ[Z
+      MYSQL_ROOT_PASSWORD: kwd2%/O.?NSN4ZwWXJ[Z
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uuser -p$$MYSQL_PASSWORD || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backend
+
+  app:
+    build: ./rest/rest
+    container_name: spring_app
+    ports:
+      - "127.0.0.1:8090:8090"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/rest_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: kwd2%/O.?NSN4ZwWXJ[Z
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

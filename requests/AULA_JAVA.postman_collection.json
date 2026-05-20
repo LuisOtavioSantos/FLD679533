@@ -1,0 +1,290 @@
+{
+  "info": {
+    "name": "Aula 2 - Endpoints e Parâmetros (Spring Boot)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Greeting (Query Params)",
+      "item": [
+        {
+          "name": "Hello World",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/hello?name=Turma",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "hello"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Turma"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Math (Path Params e Exceções)",
+      "item": [
+        {
+          "name": "Soma",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/math/sum/5/5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "math",
+                "sum",
+                "5",
+                "5"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Divisão por Zero (Para mostrar Erro 400 amigável)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/math/division/10/0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "math",
+                "division",
+                "10",
+                "0"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Person (CRUD Completo e Body Params)",
+      "item": [
+        {
+          "name": "Listar Todas Pessoas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/person",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "person"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/person/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "person",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar Nova Pessoa (POST com Body)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"João\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Brasil\",\n    \"gender\": \"Masculino\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/person",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "person"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Erro de Validação de Entrada (@Valid)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Brasil\",\n    \"gender\": \"Masculino\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/person",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "person"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Pessoa (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": 1,\n    \"firstName\": \"João Atualizado\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Brasil\",\n    \"gender\": \"Masculino\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/person/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "person",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Deletar Pessoa (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/person/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "person",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Antigo)",
+      "item": [
+        {
+          "name": "findAllUsers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "user"
+              ]
+            }
+          }
+        },
+        {
+          "name": "createUser",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"José\",\n    \"lastName\": \"Antonio\",\n    \"address\": \"Lavras - MG\",\n    \"gender\": \"Masculino\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "user"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. TestLogger",
+      "item": [
+        {
+          "name": "Test Logs (Ver Console)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}:{{local_port}}/test",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "{{local_port}}",
+              "path": [
+                "test"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost"
+    },
+    {
+      "key": "local_port",
+      "value": "8090"
+    }
+  ]
+}

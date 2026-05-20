@@ -1,0 +1,57 @@
+# Configuração completa e autocontida para Desenvolvimento (Local)
+spring:
+  application:
+    name: rest
+  
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rest_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+    username: user # Trocar o usuário para produção
+    password: kwd2%/O.?NSN4ZwWXJ[Z
+  
+  jpa:
+    hibernate:
+      # JOGADA DO DDL: Atualiza as tabelas automaticamente sem precisar de script
+      ddl-auto: update
+      # ddl-auto: validate # <--- (Padrão ouro: troque para validate se for usar Flyway)
+    show-sql: false
+    # Na versão antiga era necessário especificar a versão do BD:
+    # properties:
+    #   hibernate:
+    #     dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+  
+  flyway:
+    # JOGADA DO FLYWAY: Desligado no Dev para não brigar com o ddl-auto: update
+    enabled: false
+    # enabled: true # <--- (Padrão ouro: troque para true na indústria)
+    
+    # Se quiser usar o Flyway, mas tirar o "comportamento chato" do checksum:
+    # validate-on-migrate: false
+    
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+security:
+  jwt:
+    # Chave secreta em Base64 (256-bit / 32 bytes).
+    secret-key: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpams=
+    expiration: 36000000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v1/api-docs
+
+logging:
+  level:
+    com.example.rest: DEBUG
+
+server:
+  port: 8090
+
+app:
+  admin:
+    email: admin@rest.com
+    password: admin123

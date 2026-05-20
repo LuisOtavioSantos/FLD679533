@@ -1,0 +1,42 @@
+# Database
+mysql/
+
+# Docker
+.docker/
+
+# Maven / Java
+target/
+*.jar
+*.war
+*.ear
+.mvn/
+mvnw
+mvnw.cmd
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.springBeans
+
+# VS Code
+.vscode/
+
+# Logs and Temp
+*.log
+temp/
+tmp/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+.sts4-cache/
