@@ -7,7 +7,7 @@ Este é o repositório do backend do projeto, desenvolvido com **Spring Boot 3.x
 Este projeto foi projetado para rodar em conjunto com um frontend Next.js e serviços auxiliares de banco de dados e inteligência artificial. 
 
 A orquestração central de todos estes serviços (incluindo o Docker Compose) e a infraestrutura unificada estão concentradas no repositório guarda-chuva principal:
-*   [Repositório Central (Umbrella)](https://github.com/LuisOtavioSantos/Introdu-o-Ao-Desenvolvimento-de-Sistemas-Web.git)
+*   [Repositório Central](https://github.com/LuisOtavioSantos/Intro-o-Ao-Desenvolvimento-de-Sistemas-Web.git)
 
 Recomenda-se clonar e executar o projeto a partir do repositório central para obter o ambiente completo de desenvolvimento.
 
