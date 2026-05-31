@@ -1,6 +1,6 @@
 GERAR CHAVE SECRETA DO JWT (JWT SECRET KEY 256-BIT BASE64)
 
-Opção 1: Usando OpenSSL (Recomendado - Git Bash/Linux)
+Opção 1: Usando OpenSSL (Recomendado - Git Bash/Linux/macOS)
 openssl rand -base64 32
 
 Opção 2: Usando Python
@@ -15,51 +15,89 @@ GERAR SENHA FORTE PARA O BANCO DE DADOS
 Opção 1: Usando OpenSSL
 openssl rand -base64 16
 
-Opção 2: Usando Python (Senha puramente alfanumérica + símbolos seguros)
+Opção 2: Usando Python (Senha alfanumérica + símbolos seguros)
 python -c "import secrets, string; print(''.join(secrets.choice(string.ascii_letters + string.digits + '-_!?') for i in range(20)))"
 
 
+DOCKER COMPOSE - MODOS DE EXECUÇÃO
+
+1) Modo Desenvolvimento (Local com Spring DevTools e Live Reload):
+docker compose -f docker-compose.yml -f docker-compose-dev.yml up --build -d
+
+2) Modo Watch (Sincronização de arquivos em tempo real no contêiner - Recomendado):
+docker compose -f docker-compose.yml -f docker-compose-dev.yml watch
+ou
+docker compose -f docker-compose.yml -f docker-compose-dev.yml up --watch
+
+3) Modo Produção (Build final autocontido):
+docker compose up --build -d
+
+4) Parar e remover todos os contêineres:
+docker compose -f docker-compose.yml -f docker-compose-dev.yml down
+
+5) Remover todas as imagens do Docker
+docker rmi -f $(docker images -q)
+ou 
+docker rm -f ollama mysql_db spring_app ollama_pull
 
 
-SQL
+GERENCIAMENTO DO MYSQL VIA DOCKER
+
+Acessar o terminal interativo do MySQL dentro do contêiner:
+docker exec -it mysql_db mysql -u user -p"kwd2%/O.?NSN4ZwWXJ[Z" rest_db
+
+Ver as tabelas existentes:
+docker exec -i mysql_db mysql -u user -p"kwd2%/O.?NSN4ZwWXJ[Z" rest_db -e "SHOW TABLES;"
+
+Visualizar todos os produtos:
+docker exec -i mysql_db mysql -u user -p"kwd2%/O.?NSN4ZwWXJ[Z" rest_db -e "SELECT * FROM products;"
 
 
-INSERT INTO products (name, description, price, category, stock) VALUES
-('Teclado Mecânico', 'Teclado mecânico RGB com switches azuis, ideal para digitação e jogos.', 250.00, 'Periféricos', 15),
-('Monitor 144Hz', 'Monitor Gamer de 24 polegadas, painel IPS, 144Hz e tempo de resposta de 1ms.', 1200.00, 'Hardware', 50),
-('Mouse Gamer', 'Mouse ergonômico com 10.000 DPI ajustáveis e iluminação customizável.', 180.00, 'Periféricos', 100),
-('Placa de Vídeo RTX', 'Placa de vídeo de última geração com suporte a Ray Tracing e DLSS 3.0.', 3500.00, 'Hardware', 10);
+SQL - SCRIPTS DE ALINHAMENTO DE BANCO DE DADOS (DADOS ATUAIS)
+UTILIZAR APENAS PARA TESTES EM MODO DESENVOLVIMENTO, EM MODO PRODUÇÃO UTILIZE O FLYWAY
+
+Carga Inicial (INSERT INTO) com dados fiéis ao banco de dados:
+INSERT INTO products (id, category, description, name, price, stock, image_url) VALUES
+(1, 'Eletrônicos', 'Notebook Gamer de altíssima performance com RTX 4090, 64GB RAM e tela 4K.', 'Notebook Gamer RTX', 13499.90, 0, '/uploads/notebook.png'),
+(2, 'Móveis', 'Cadeira premium com estrutura de aço, espuma injetada de alta densidade e reclinação até 180 graus.', 'Cadeira Gamer Ergonômica', 1449.99, 20, '/uploads/chair.png'),
+(3, 'Periféricos', 'Mouse ergonômico com 10.000 DPI ajustáveis e iluminação customizável.', 'Mouse Gamer', 189.90, 100, '/uploads/mouse.png'),
+(4, 'Hardware', 'Placa de vídeo de última geração com suporte a Ray Tracing e DLSS 3.0.', 'Placa de Vídeo RTX 5060', 3499.90, 10, '/uploads/gpu.png'),
+(5, 'Periféricos', 'Teclado mecânico RGB com switches azuis, ideal para digitação e jogos.', 'Teclado Mecânico', 249.90, 15, '/uploads/keyboard.png'),
+(6, 'Hardware', 'Monitor Gamer de 24 polegadas, painel IPS, 144Hz e tempo de resposta de 1ms.', 'Monitor 144Hz', 1199.99, 50, '/uploads/monitor.png'),
+(7, 'Periféricos', 'Fone de ouvido com som surround 7.1 virtual, almofadas macias e microfone com cancelamento de ruído.', 'Headset Gamer 7.1', 449.90, 50, '/uploads/headset.png'),
+(8, 'Hardware', 'Armazenamento de altíssima velocidade PCIe Gen4 com leitura de 7000MB/s. Adeus telas de carregamento.', 'SSD NVMe M.2 1TB', 879.90, 60, '/uploads/ssd.png');
 
 
+Atualização Individual de Produtos Alinhados com a Carga do Sistema:
 
+UPDATE products 
+SET name = 'Notebook Gamer RTX', category = 'Eletrônicos', description = 'Notebook Gamer de altíssima performance com RTX 4090, 64GB RAM e tela 4K.', price = 13499.90, image_url = '/uploads/notebook.png', stock = 0 
+WHERE id = 1;
 
-TESTES DE API (Windows CMD / PowerShell)
-Lembre-se de substituir SEU_TOKEN_AQUI pelo token JWT válido.
-Utilizamos curl.exe e aspas duplas (\") para rodar nativamente no Windows.
+UPDATE products 
+SET name = 'Cadeira Gamer Ergonômica', category = 'Móveis', description = 'Cadeira premium com estrutura de aço, espuma injetada de alta densidade e reclinação até 180 graus.', price = 1449.99, image_url = '/uploads/chair.png', stock = 20 
+WHERE id = 2;
 
+UPDATE products 
+SET name = 'Mouse Gamer', category = 'Periféricos', description = 'Mouse ergonômico com 10.000 DPI ajustáveis e iluminação customizável.', price = 189.90, image_url = '/uploads/mouse.png', stock = 100 
+WHERE id = 3;
 
-1) Listar Produtos (GET)
-curl.exe -i --location "http://localhost:8090/product" ^
---header "Authorization: Bearer SEU_TOKEN_AQUI"
+UPDATE products 
+SET name = 'Placa de Vídeo RTX 5060', category = 'Hardware', description = 'Placa de vídeo de última geração com suporte a Ray Tracing e DLSS 3.0.', price = 3499.90, image_url = '/uploads/gpu.png', stock = 10 
+WHERE id = 4;
 
-2) Criar Produto (POST)
-curl.exe -i --location --request POST "http://localhost:8090/product" ^
---header "Content-Type: application/json" ^
---header "Authorization: Bearer SEU_TOKEN_AQUI" ^
---data "{\"name\": \"Teclado Gamer\", \"description\": \"RGB Mecânico\", \"price\": 350.0, \"category\": \"Periféricos\", \"stock\": 20}"
+UPDATE products 
+SET name = 'Teclado Mecânico', category = 'Periféricos', description = 'Teclado mecânico RGB com switches azuis, ideal para digitação e jogos.', price = 249.90, image_url = '/uploads/keyboard.png', stock = 15 
+WHERE id = 5;
 
-3) Atualizar Produto (PUT)
-curl.exe -i --location --request PUT "http://localhost:8090/product" ^
---header "Content-Type: application/json" ^
---header "Authorization: Bearer SEU_TOKEN_AQUI" ^
---data "{\"id\": 2, \"name\": \"Notebook Gamer (Atualizado)\", \"description\": \"RTX 4090, 64GB RAM\", \"price\": 16500.0, \"category\": \"Eletrônicos\", \"stock\": 10}"
+UPDATE products 
+SET name = 'Monitor 144Hz', category = 'Hardware', description = 'Monitor Gamer de 24 polegadas, painel IPS, 144Hz e tempo de resposta de 1ms.', price = 1199.99, image_url = '/uploads/monitor.png', stock = 50 
+WHERE id = 6;
 
-4) Realizar Compra (POST)
-curl.exe -i --location --request POST "http://localhost:8090/purchase" ^
---header "Content-Type: application/json" ^
---header "Authorization: Bearer SEU_TOKEN_AQUI" ^
---data "{\"clientId\": 1, \"productId\": 2, \"quantity\": 2}"
+UPDATE products 
+SET name = 'Headset Gamer 7.1', category = 'Periféricos', description = 'Fone de ouvido com som surround 7.1 virtual, almofadas macias e microfone com cancelamento de ruído.', price = 449.90, image_url = '/uploads/headset.png', stock = 50 
+WHERE id = 7;
 
-
-Acessar o MySQL via Docker:
-docker exec -it mysql_db mysql -u user -p"kwd2%/O.?NSN4ZwWXJ[Z" -e "SHOW DATABASES;"
+UPDATE products 
+SET name = 'SSD NVMe M.2 1TB', category = 'Hardware', description = 'Armazenamento de altíssima velocidade PCIe Gen4 com leitura de 7000MB/s. Adeus telas de carregamento.', price = 879.90, image_url = '/uploads/ssd.png', stock = 60 
+WHERE id = 8;

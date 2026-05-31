@@ -10,4 +10,5 @@ public interface IClientService {
     ClientDTO findById(Long id);
     ClientDTO update(ClientDTO clientDTO);
     void delete(Long id);
+    ClientDTO becomeVendor(String email);
 }

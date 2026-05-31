@@ -2,18 +2,29 @@
 spring:
   application:
     name: rest
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:seu_client_id_mock.apps.googleusercontent.com}
+            client-secret: ${GOOGLE_CLIENT_SECRET:seu_client_secret_mock}
+            scope:
+              - email
+              - profile
+
   
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/rest_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-    username: user # Trocar o usuário para produção
-    password: kwd2%/O.?NSN4ZwWXJ[Z
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/rest_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DB_USER:user} # Trocar o usuário para produção
+    password: ${DB_PASSWORD:kwd2%/O.?NSN4ZwWXJ[Z}
   
   jpa:
     hibernate:
       # JOGADA DO DDL: Atualiza as tabelas automaticamente sem precisar de script
       ddl-auto: update
-      # ddl-auto: validate # <--- (Padrão ouro: troque para validate se for usar Flyway)
+      # ddl-auto: validate # (Padrão ouro: troque para validate se for usar Flyway)
     show-sql: false
     # Na versão antiga era necessário especificar a versão do BD:
     # properties:
@@ -24,13 +35,28 @@ spring:
   flyway:
     # JOGADA DO FLYWAY: Desligado no Dev para não brigar com o ddl-auto: update
     enabled: false
-    # enabled: true # <--- (Padrão ouro: troque para true na indústria)
+    # enabled: true # (Padrão ouro: troque para true na indústria)
     
     # Se quiser usar o Flyway, mas tirar o "comportamento chato" do checksum:
     # validate-on-migrate: false
     
     baseline-on-migrate: true
     locations: classpath:db/migration
+
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:false}
+          starttls:
+            enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:false}
+          # connectiontimeout: 5000
+          # timeout: 5000
+          # writetimeout: 5000
 
 security:
   jwt:
@@ -49,9 +75,24 @@ logging:
     com.example.rest: DEBUG
 
 server:
-  port: 8090
+  port: ${SERVER_PORT:8080}
 
 app:
   admin:
     email: admin@rest.com
     password: admin123
+  backend-url: ${BACKEND_URL:http://localhost:8090}
+  ai:
+    provider: ${AI_PROVIDER:ollama}
+  gemini:
+    api-key: ${GEMINI_API_KEY:coloque_sua_chave_aqui}
+  oauth2:
+    frontend-redirect-url: ${FRONTEND_REDIRECT_URL:http://localhost:3000/oauth2/redirect}
+
+
+# Configurações do Ollama lidas pelo nosso LlmConfig.java (NÃO pelo starter auto-config)
+app.ollama:
+  base-url: ${OLLAMA_URL:http://localhost:11434}
+  model-name: llama3.2
+  temperature: 0.7
+

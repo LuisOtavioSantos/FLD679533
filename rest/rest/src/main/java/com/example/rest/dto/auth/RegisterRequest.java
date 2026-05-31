@@ -28,4 +28,7 @@ public class RegisterRequest {
     
     private String address;
     private String gender;
+    
+    @NotBlank(message = "A role (papel) é obrigatória")
+    private String role;
 }

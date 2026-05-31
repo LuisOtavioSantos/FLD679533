@@ -1,6 +1,7 @@
 package com.example.rest.model;
 
 public enum Role {
-    USER,
+    CLIENT,
+    VENDOR,
     ADMIN
 }

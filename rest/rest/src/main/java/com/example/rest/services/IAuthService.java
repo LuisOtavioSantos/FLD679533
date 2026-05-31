@@ -9,4 +9,7 @@ import com.example.rest.dto.auth.RegisterRequest;
 public interface IAuthService {
     AuthResponse register(RegisterRequest request);
     AuthResponse login(LoginRequest request);
+    void verifyEmail(String token);
+    AuthResponse getCurrentUser(String email);
 }
+

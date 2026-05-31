@@ -59,7 +59,11 @@ public class Client implements Serializable, UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     @Builder.Default
-    private Role role = Role.USER;
+    private Role role = Role.CLIENT;
+
+    @Column(name = "is_email_verified", nullable = false)
+    @Builder.Default
+    private boolean isEmailVerified = false;
 
     // Relacionamento: um Client tem muitas Purchases
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
@@ -100,6 +104,6 @@ public class Client implements Serializable, UserDetails {
     @Override
     @JsonIgnore
     public boolean isEnabled() {
-        return true;
+        return isEmailVerified;
     }
 }

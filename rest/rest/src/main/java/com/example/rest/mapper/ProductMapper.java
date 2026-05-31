@@ -10,14 +10,18 @@ import org.mapstruct.MappingTarget;
 public interface ProductMapper {
 
     // Entity -> DTO
+    @Mapping(target = "vendorId", source = "vendor.id")
+    @Mapping(target = "vendorName", source = "vendor.firstName")
     ProductDTO toDTO(Product entity);
 
     // DTO -> Entity
     @Mapping(target = "purchases", ignore = true)
+    @Mapping(target = "vendor", ignore = true) // vendor must be set manually by the service
     Product toEntity(ProductDTO dto);
 
     // Atualiza entidade existente com dados do DTO
     @Mapping(target = "purchases", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "vendor", ignore = true) // vendor can't be changed during update by DTO
     void updateEntityFromDTO(ProductDTO dto, @MappingTarget Product entity);
 }

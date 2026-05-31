@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.example.rest.repository.ClientRepository;
 import org.springframework.context.annotation.Lazy;
@@ -40,31 +41,41 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (token != null && tokenProvider.validateToken(token)) {
             String username = tokenProvider.getUsernameFromToken(token);
 
-            UserDetails userDetails = clientRepository.findByEmail(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Client not found"));
+            clientRepository.findByEmail(username).ifPresent(userDetails -> {
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities());
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
 
-            authentication.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request));
-
-            // Seta a autenticação no SecurityContext
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Seta a autenticação no SecurityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            });
         }
 
         filterChain.doFilter(request, response);
     }
 
-    // Extrai o token do header "Authorization: Bearer <token>"
+    // Extrai o token do Cookie HttpOnly ou do header "Authorization"
     private String extractToken(HttpServletRequest request) {
+        // Busca o token no Cookie HttpOnly (Padrão Ouro para SPA)
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        // Fallback: Authorization Header (útil para testes no Postman/Insomnia)
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
+
         return null;
     }
 }

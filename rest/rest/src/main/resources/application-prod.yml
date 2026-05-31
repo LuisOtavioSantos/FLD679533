@@ -2,6 +2,27 @@
 spring:
   application:
     name: rest
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -43,3 +64,6 @@ app:
   admin:
     email: ${ADMIN_EMAIL:admin@prod.com}
     password: ${ADMIN_PASSWORD:MudarSenhaSeguraProd123!}
+  backend-url: ${BACKEND_URL:https://api.seudominio.com}
+  ai:
+    provider: ${AI_PROVIDER:gemini}

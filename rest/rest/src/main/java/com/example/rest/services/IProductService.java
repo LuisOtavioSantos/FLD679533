@@ -9,7 +9,8 @@ import java.util.List;
 public interface IProductService {
     List<ProductDTO> findAll();
     ProductDTO findById(Long id);
-    ProductDTO create(ProductDTO productDTO);
+    ProductDTO create(ProductDTO productDTO, String email);
     ProductDTO update(ProductDTO productDTO);
     void delete(Long id);
+    ProductDTO uploadImage(Long id, org.springframework.web.multipart.MultipartFile file);
 }

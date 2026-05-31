@@ -7,6 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -49,8 +51,17 @@ public class Product implements Serializable {
     @Builder.Default
     private Integer stock = 0;
 
+    // URL da imagem do produto (padrão Amazon: banco armazena URL, arquivo fica em storage separado)
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
     // Relacionamento: um Product tem muitas Purchases
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore // evita loop infinito na serialização JSON
     private List<Purchase> purchases;
+
+    // Relacionamento: um Product pertence a um Vendor (Client com Role.VENDOR)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "vendor_id")
+    private Client vendor;
 }

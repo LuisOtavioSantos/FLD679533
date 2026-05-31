@@ -40,8 +40,10 @@ public class ProductController {
     @ResponseStatus(org.springframework.http.HttpStatus.CREATED)
     @Operation(summary = "Criar produto", description = "Cria um novo produto")
     // @Valid ativa a validação das anotações (@NotBlank, @NotNull) que colocamos dentro do ProductDTO
-    public ProductDTO create(@jakarta.validation.Valid @RequestBody ProductDTO productDTO) {
-        return service.create(productDTO);
+    public ProductDTO create(
+            @jakarta.validation.Valid @RequestBody ProductDTO productDTO,
+            @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return service.create(productDTO, userDetails.getUsername());
     }
 
     @PutMapping(
@@ -58,5 +60,27 @@ public class ProductController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Enviar imagem do produto", description = "Faz o upload de uma imagem e associa ao produto")
+    public ProductDTO uploadImage(@PathVariable("id") Long id, @RequestParam("file") org.springframework.web.multipart.MultipartFile file) {
+        return service.uploadImage(id, file);
+    }
+
+    @GetMapping(value = "/{id}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Listar comentários", description = "Retorna todos os comentários de um produto")
+    public List<com.example.rest.dto.comment.CommentResponse> getComments(@PathVariable("id") Long id) {
+        return service.getComments(id);
+    }
+
+    @PostMapping(value = "/{id}/comments", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Adicionar comentário", description = "Adiciona um comentário a um produto (Requer autenticação)")
+    @ResponseStatus(org.springframework.http.HttpStatus.CREATED)
+    public com.example.rest.dto.comment.CommentResponse addComment(
+            @PathVariable("id") Long id,
+            @jakarta.validation.Valid @RequestBody com.example.rest.dto.comment.CommentRequest request,
+            @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return service.addComment(id, request, userDetails.getUsername());
     }
 }

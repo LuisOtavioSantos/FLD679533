@@ -32,6 +32,7 @@ public class DataInitializerConfig {
                         .address("Rua do Admin, 1")
                         .gender("Outro")
                         .role(Role.ADMIN)
+                        .isEmailVerified(true)
                         .build();
                 repository.save(admin);
                 System.out.println("Usuário ADMINISTRADOR criado com sucesso: " + adminEmail + " / " + adminPassword);

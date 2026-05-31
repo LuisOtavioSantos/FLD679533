@@ -1,0 +1,91 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: rest_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: kwd2%/O.?NSN4ZwWXJ[Z
+      MYSQL_ROOT_PASSWORD: kwd2%/O.?NSN4ZwWXJ[Z
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -uuser -p$$MYSQL_PASSWORD || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backend
+
+  app:
+    build:
+      context: ./rest/rest
+      dockerfile: Dockerfile.dev
+    ports:
+      - "127.0.0.1:8090:8090"
+    container_name: spring_app
+    depends_on:
+      db:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+      SERVER_PORT: 8090
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/rest_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: kwd2%/O.?NSN4ZwWXJ[Z
+      SPRING_PROFILES_ACTIVE: dev
+      LANGCHAIN4J_OLLAMA_CHAT_MODEL_BASE_URL: http://ollama:11434
+      OLLAMA_URL: http://ollama:11434
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      FRONTEND_REDIRECT_URL: ${FRONTEND_REDIRECT_URL}
+    volumes:
+      # - ./rest/rest:/app # Melhora o monitoramento, mas pode dar conflito
+      - maven-cache:/root/.m2
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./rest/rest
+          target: /app
+          ignore:
+            - target/
+            - .mvn/
+            - logs/
+    networks:
+      - backend
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama/data:/root/.ollama
+    networks:
+      - backend
+
+  ollama-pull:
+    image: curlimages/curl:latest
+    container_name: ollama_pull
+    depends_on:
+      - ollama
+    networks:
+      - backend
+    command: >
+      sh -c "echo 'Aguardando Ollama iniciar...' && sleep 5 && echo 'Fazendo pull do Llama 3.2...' && curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3.2\"}'"
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  maven-cache:

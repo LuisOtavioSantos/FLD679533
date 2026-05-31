@@ -43,4 +43,10 @@ public class ClientController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping(value = "/become-vendor", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Tornar Vendedor", description = "Altera o perfil do usuário logado para VENDEDOR")
+    public ClientDTO becomeVendor(@org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        return service.becomeVendor(userDetails.getUsername());
+    }
 }

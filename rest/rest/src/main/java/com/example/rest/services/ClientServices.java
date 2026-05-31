@@ -61,4 +61,14 @@ public class ClientServices implements IClientService {
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found!"));
         repository.delete(entity);
     }
+
+    public ClientDTO becomeVendor(String email) {
+        logger.info("Upgrading client {} to VENDOR", email);
+        Client entity = repository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found!"));
+        
+        entity.setRole(com.example.rest.model.Role.VENDOR);
+        Client updatedClient = repository.save(entity);
+        return clientMapper.toDTO(updatedClient);
+    }
 }

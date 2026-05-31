@@ -1,0 +1,640 @@
+{
+    "info": {
+        "name": "Aula Spring Boot",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Aula 2 - Endpoints e Parâmetros (Spring Boot)",
+            "item": [
+                {
+                    "name": "1. Greeting (Query Params)",
+                    "item": [
+                        {
+                            "name": "Hello World",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/hello?name=Turma",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "hello"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "name",
+                                            "value": "Turma"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "2. Math (Path Params e Exceções)",
+                    "item": [
+                        {
+                            "name": "Soma",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/math/sum/5/5",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "math",
+                                        "sum",
+                                        "5",
+                                        "5"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Divisão por Zero (Para mostrar Erro 400 amigável)",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/math/division/10/0",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "math",
+                                        "division",
+                                        "10",
+                                        "0"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "3. Person (CRUD Completo e Body Params)",
+                    "item": [
+                        {
+                            "name": "Listar Todas Pessoas",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/person",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "person"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Buscar por ID",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/person/1",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "person",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Criar Nova Pessoa (POST com Body)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"firstName\": \"João\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Brasil\",\n    \"gender\": \"Masculino\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/person",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "person"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Erro de Validação de Entrada (@Valid)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Brasil\",\n    \"gender\": \"Masculino\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/person",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "person"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Atualizar Pessoa (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": 1,\n    \"firstName\": \"João Atualizado\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Brasil\",\n    \"gender\": \"Masculino\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/person/1",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "person",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Deletar Pessoa (DELETE)",
+                            "request": {
+                                "method": "DELETE",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/person/1",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "person",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Users (Antigo)",
+                    "item": []
+                },
+                {
+                    "name": "4. TestLogger",
+                    "item": [
+                        {
+                            "name": "Test Logs (Ver Console)",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}:{{local_port}}/test",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "port": "{{local_port}}",
+                                    "path": [
+                                        "test"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "REST API - Fluxo Completo (USER vs ADMIN)",
+            "item": [
+                {
+                    "name": "0. Autenticação",
+                    "item": [
+                        {
+                            "name": "Registrar Novo Usuário (Sempre USER)",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.response.code === 200) {",
+                                            "    var jsonData = pm.response.json();",
+                                            "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"cliente@teste.com\",\n    \"password\": \"senha123\",\n    \"firstName\": \"João\",\n    \"lastName\": \"Silva\",\n    \"address\": \"Rua das Flores, 123\",\n    \"gender\": \"Masculino\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/auth/register",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "auth",
+                                        "register"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Login como USUÁRIO",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.response.code === 200) {",
+                                            "    var jsonData = pm.response.json();",
+                                            "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"cliente@teste.com\",\n    \"password\": \"senha123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/auth/login",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Login como ADMIN (Mestre)",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "if (pm.response.code === 200) {",
+                                            "    var jsonData = pm.response.json();",
+                                            "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"admin@rest.com\",\n    \"password\": \"admin123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/auth/login",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "1. Área do Usuário (Logado)",
+                    "item": [
+                        {
+                            "name": "Produtos - Listar Todos (Público)",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/product",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "product"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Compras - Realizar Compra",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"clientId\": 1,\n    \"productId\": 1,\n    \"quantity\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/purchase",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "purchase"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "2. Área Administrativa (Apenas ADMIN)",
+                    "item": [
+                        {
+                            "name": "Produtos - Criar Novo",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Notebook Gamer\",\n    \"description\": \"RTX 4090, 32GB RAM\",\n    \"price\": 15000,\n    \"category\": \"Eletrônicos\",\n    \"stock\": 10\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/product",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "product"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Produtos - Atualizar",
+                            "request": {
+                                "method": "PUT",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": 1,\n    \"name\": \"Notebook Gamer (Atualizado)\",\n    \"description\": \"RTX 4090, 64GB RAM\",\n    \"price\": 16500,\n    \"category\": \"Eletrônicos\",\n    \"stock\": 10\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/product",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "product"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Produtos - Deletar",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://{{host}}:{{port}}/product/1",
+                                    "protocol": "http",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "port": "{{port}}",
+                                    "path": [
+                                        "product",
+                                        "1"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Integração IA - Spring Boot",
+            "item": [
+                {
+                    "name": "Conversar com a IA (Chat Simples)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://{{host}}:{{port}}/api/ai/chat?prompt=O que é o Spring Boot e qual a sua principal vantagem?",
+                            "protocol": "http",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "port": "{{port}}",
+                            "path": [
+                                "api",
+                                "ai",
+                                "chat"
+                            ],
+                            "query": [
+                                {
+                                    "key": "prompt",
+                                    "value": "O que é o Spring Boot e qual a sua principal vantagem?"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Extrair Dados Estruturados de um Texto (JSON)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "text/plain",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "Olá, gostaria de agendar uma consulta para o João da Silva na próxima terça-feira às 14h. O telefone dele é 11987654321 e o email é joao.silva@email.com. O motivo é que ele está com dores de cabeça frequentes."
+                        },
+                        "url": {
+                            "raw": "http://{{host}}:{{port}}/api/ai/extract",
+                            "protocol": "http",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "port": "{{port}}",
+                            "path": [
+                                "api",
+                                "ai",
+                                "extract"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Conversar com IA Premium (Gemini)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://{{host}}:{{port}}/api/ai/premium/gemini/chat?prompt=Por que usar o Gemini?",
+                            "protocol": "http",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "port": "{{port}}",
+                            "path": [
+                                "api",
+                                "ai",
+                                "premium",
+                                "gemini",
+                                "chat"
+                            ],
+                            "query": [
+                                {
+                                    "key": "prompt",
+                                    "value": "Por que usar o Gemini?"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost"
+        },
+        {
+            "key": "local_port",
+            "value": "8090"
+        },
+        {
+            "key": "jwt_token",
+            "value": ""
+        },
+        {
+            "key": "host",
+            "value": "localhost",
+            "type": "string"
+        },
+        {
+            "key": "port",
+            "value": "8090",
+            "type": "string"
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{jwt_token}}",
+                "type": "string"
+            }
+        ]
+    }
+}

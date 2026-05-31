@@ -12,6 +12,7 @@ target/
 .mvn/
 mvnw
 mvnw.cmd
+.env
 
 # IntelliJ IDEA
 .idea/
@@ -40,3 +41,10 @@ Thumbs.db
 
 # Spring Boot
 .sts4-cache/
+rest/rest/src/main/java/com/example/rest/dto/auth/AuthResponse.java
+
+# Modelos da IA Local
+ollama/
+
+# Script de Limpeza do Postman
+requests/clean_postman.py

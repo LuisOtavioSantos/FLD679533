@@ -12,4 +12,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     // Busca todas as compras de um produto
     List<Purchase> findByProductId(Long productId);
+
+    // Verifica se um cliente comprou um produto
+    boolean existsByClientIdAndProductId(Long clientId, Long productId);
 }

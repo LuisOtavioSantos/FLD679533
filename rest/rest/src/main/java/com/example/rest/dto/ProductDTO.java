@@ -29,4 +29,9 @@ public class ProductDTO {
     @NotNull(message = "O estoque do produto é obrigatório")
     @Min(value = 0, message = "O estoque não pode ser negativo")
     private Integer stock;
+
+    private String imageUrl;
+
+    private Long vendorId;
+    private String vendorName;
 }
